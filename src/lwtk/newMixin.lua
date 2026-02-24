@@ -67,7 +67,7 @@ function Mixin:__index(k)
         return v
     elseif k == "extra" or k == "override" or k == "implement" then
         v = {}
-        self[k] = v
+        rawset(self, k, v)
         return v
     else
         v = self.override[k]

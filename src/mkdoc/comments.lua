@@ -57,7 +57,7 @@ do
         assert(not endPosMap[end_pos2])
         startPosMap[pos1] = entry
         endPosMap[end_pos2] = entry
-        print("PPP", pos1, pos2, end_pos1, end_pos2, comment)
+        --print("PPP", pos1, pos2, end_pos1, end_pos2, comment)
     end
     
     function comments.sort()
@@ -136,12 +136,12 @@ do
                                 beginSpace)
         else
             local col = column(entry.pos2 + pos - 1)
-            print("###################", require"inspect"{entry, pos, col})
+            --print("###################", require"inspect"{entry, pos, col})
             indent = string.rep(" ", col - 1)
         end
         local rest2 = rest:gsub("\n"..indent, "\n")
                           
-        print("#########", require"inspect"{rest, rest2, indent})
+        --print("#########", require"inspect"{rest, rest2, indent})
         local cmtEnd = space^0 * P("]"..eq.."]")
         return lpeg.match(C((-cmtEnd * P(1))^0) * cmtEnd * -P(1), rest2)
     end
