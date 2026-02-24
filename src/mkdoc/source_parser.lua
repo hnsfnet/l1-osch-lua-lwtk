@@ -226,6 +226,35 @@ function source_parser.parseAllModules(TRACE, depOrderedModuleNames, moduleInfos
                                     thisModuleInfo.argListString = argListString
                                     thisModuleInfo.isMethod = isMethod
                                 end
+                                -- For Mixins: traverse the initMixin callback body.
+                                -- Pattern: local M = lwtk.newMixin("name", ..., function(M, Super) ... end)
+                                if isMixin and tag == "Local" then
+                                    local rhs = s2[1]
+                                    if rhs and rhs.tag == "Call" then
+                                        -- Find the last Function argument (the initMixin callback)
+                                        local funcArg
+                                        for i = #rhs, 2, -1 do
+                                            if rhs[i].tag == "Function" then
+                                                funcArg = rhs[i]
+                                                break
+                                            end
+                                        end
+                                        if funcArg then
+                                            -- funcArg[1] is the parameter list, funcArg[2] is the body block
+                                            local callbackEnv = setmetatable({}, { __index = env })
+                                            -- Set callback parameters: function(MixinObj, Super)
+                                            local params = funcArg[1]
+                                            if params and params[1] and params[1].tag == "Id" then
+                                                callbackEnv[params[1][1]] = thisModule
+                                            end
+                                            -- Super parameter is runtime-only, set to nil
+                                            local body = funcArg[2]
+                                            if body then
+                                                processBlock(body, callbackEnv)
+                                            end
+                                        end
+                                    end
+                                end
                             elseif tag == "Localrec" then
                                 assert(#s2 == 1 and s2.tag == nil and s2[1].tag == "Function")
                                 local rslt = processExp(env, s2[1])
@@ -266,6 +295,44 @@ function source_parser.parseAllModules(TRACE, depOrderedModuleNames, moduleInfos
                                 memberInfo.argListString = argListString
                                 memberInfo.isMethod      = isMethod
                                  --trace("LLLLLLLLLLLL", require"inspect"{memberInfo.memberName, processExp(env, exp), lwtk.TextLabel.getMeasures })
+                            elseif isMixin and #lhsl == 1 then
+                                local lhs = lhsl[1]
+                                local memberName
+                                local isMixinMember = false
+                                if lhs.tag == "Index" and lhs[1].tag == "Index" then
+                                    -- Pattern: Mixin.override:foo(args) or Mixin.implement:foo(args)
+                                    local base = processExp(env, lhs[1][1])
+                                    local subTableName = processExp(env, lhs[1][2])
+                                    memberName = processExp(env, lhs[2])
+                                    if base == thisModule
+                                       and (subTableName == "override" or subTableName == "implement" or subTableName == "extra")
+                                       and type(memberName) == "string"
+                                    then
+                                        isMixinMember = true
+                                    end
+                                elseif lhs.tag == "Index" then
+                                    -- Pattern: Mixin:foo(args) or Mixin.foo = function(...)
+                                    local base = processExp(env, lhs[1])
+                                    memberName = processExp(env, lhs[2])
+                                    if base == thisModule and type(memberName) == "string" then
+                                        isMixinMember = true
+                                    end
+                                end
+                                if isMixinMember then
+                                    local exp = expl[1]
+                                    local argListString, isMethod = class_util.getArgListString(exp)
+                                    local fullDoc, argListDoc = comments.stripArgListDoc(comments.getBefore(s.pos))
+                                    if not argListString and argListDoc then
+                                        argListString, isMethod = comments.argListDocToMethod(argListDoc)
+                                    end
+                                    thisModuleInfo.mixinMemberDocs = thisModuleInfo.mixinMemberDocs or {}
+                                    thisModuleInfo.mixinMemberDocs[memberName] = {
+                                        fullDoc       = fullDoc,
+                                        shortDoc      = comments.getShortDoc(fullDoc),
+                                        argListString = argListString,
+                                        isMethod      = isMethod,
+                                    }
+                                end
                             end
                         elseif tag == "Invoke" then
                             local e1 = processExp(env, s[1])
@@ -333,28 +400,94 @@ function source_parser.parseAllModules(TRACE, depOrderedModuleNames, moduleInfos
             
             -- isMethod is only known after parsing the function declaration
             --
-            if not thisModuleInfo.isInternal and thisModuleInfo.isClass --[[or thisModuleInfo.isMixin]] then
+            if not thisModuleInfo.isInternal and (thisModuleInfo.isClass or thisModuleInfo.isMixin) then
                 local methods = {}
                 local functions = {}
                 if not thisModuleInfo.memberFunctions then
                     error(require"inspect"{thisModuleName})
                 end
-                for _, f in ipairs(thisModuleInfo.memberFunctions) do
-                    if rawget(thisModule.__index, f.memberName) then
-                        local isMethod = f.isMethod
-                        if isMethod == nil then
-                            if not f.originalMemberInfo then
-                                error(require"inspect"{thisModuleName, f})
+                -- For Mixins, thisModule.__index is nil (Mixins are not classes).
+                -- Use the first realised class as a proxy to check __index membership.
+                local indexTable
+                if thisModuleInfo.isClass then
+                    indexTable = thisModule.__index
+                elseif thisModuleInfo.isMixin and thisModuleInfo.mixinRealisations then
+                    -- Use the realisation with the longest superclass chain (most members).
+                    -- mixinRealisations is a hybrid list: integer indices hold list entries.
+                    local bestProxy, bestLen
+                    for k, v in pairs(thisModuleInfo.mixinRealisations) do
+                        if type(k) == "table" and k.__index then
+                            local idx = k.__index
+                            local len = 0
+                            for _ in pairs(idx) do len = len + 1 end
+                            if not bestLen or len > bestLen then
+                                bestProxy = idx
+                                bestLen = len
                             end
-                            isMethod = f.originalMemberInfo.isMethod
-                            assert(type(isMethod) == "boolean", f.memberName)
-                        elseif f.originalMemberInfo then
-                            assert(isMethod == f.originalMemberInfo.isMethod)
                         end
-                        if isMethod then
-                            addSetKey(methods, f.memberName, f) 
-                        else
-                            addSetKey(functions, f.memberName, f)
+                    end
+                    indexTable = bestProxy
+                end
+                if indexTable then
+                    -- First pass: classify members from memberFunctions
+                    -- (these have source-parsed info: argListString, isMethod, fullDoc)
+                    for _, f in ipairs(thisModuleInfo.memberFunctions) do
+                        if rawget(indexTable, f.memberName) then
+                            local isMethod = f.isMethod
+                            if isMethod == nil then
+                                if not f.originalMemberInfo then
+                                    error(require"inspect"{thisModuleName, f})
+                                end
+                                isMethod = f.originalMemberInfo.isMethod
+                                assert(type(isMethod) == "boolean", f.memberName)
+                            elseif f.originalMemberInfo then
+                                assert(isMethod == f.originalMemberInfo.isMethod)
+                            end
+                            if isMethod then
+                                addSetKey(methods, f.memberName, f)
+                            else
+                                addSetKey(functions, f.memberName, f)
+                            end
+                        end
+                    end
+                    -- Second pass (Mixins only): add members from memberInfos2
+                    -- that were not found in memberFunctions (e.g. override/implement methods).
+                    if thisModuleInfo.isMixin then
+                        for _, f in ipairs(thisModuleInfo.memberInfos2) do
+                            if f.isDeclared and f.memberType == "function"
+                               and not methods[f.memberName]
+                               and not functions[f.memberName]
+                               and rawget(indexTable, f.memberName)
+                            then
+                                -- Look up source-parsed info from memberInfos
+                                local memberInfo = thisModuleInfo.memberInfos[f.memberName]
+                                if memberInfo and memberInfo.isMethod ~= nil then
+                                    if memberInfo.isMethod then
+                                        addSetKey(methods, f.memberName, memberInfo)
+                                    else
+                                        addSetKey(functions, f.memberName, memberInfo)
+                                    end
+                                else
+                                    -- Check mixinMemberDocs for override/implement/extra
+                                    -- source-parsed info collected during AST traversal.
+                                    local docs = thisModuleInfo.mixinMemberDocs
+                                                 and thisModuleInfo.mixinMemberDocs[f.memberName]
+                                    local minInfo = {
+                                        moduleName   = thisModuleInfo.moduleName,
+                                        memberName   = f.memberName,
+                                        memberType   = "function",
+                                        isMethod     = docs and docs.isMethod or true,
+                                        argListString = docs and docs.argListString,
+                                        fullDoc      = docs and docs.fullDoc,
+                                        shortDoc     = docs and docs.shortDoc,
+                                    }
+                                    if minInfo.isMethod or minInfo.isMethod == nil then
+                                        addSetKey(methods, f.memberName, minInfo)
+                                    else
+                                        addSetKey(functions, f.memberName, minInfo)
+                                    end
+                                end
+                            end
                         end
                     end
                 end

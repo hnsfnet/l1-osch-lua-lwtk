@@ -4,6 +4,8 @@
 ## Contents
 
    * [Inheritance](#inheritance)
+   * [Methods](#methods)
+      * [discard()](#.discard) - Discard Node that should no longer be used.
    * [Subclasses](#subclasses)
 
 
@@ -11,6 +13,14 @@
    * / **[Object](../lwtk/Object.md#inheritance)** /
         * [Actionable](../lwtk/Actionable.md#inheritance) / _`Node`_
         * **[Application](../lwtk/Application.md#inheritance)** / _`Node`_
+
+## Methods
+   * <span id=".discard">**`Node:discard()`**</span>
+
+     Discard Node that should no longer be used.
+     
+     This function could be useful under Lua 5.1 which does not have ephemeron tables.
+
 
 ## Subclasses
    * / **[Object](../lwtk/Object.md#subclasses)** /

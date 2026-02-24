@@ -4,6 +4,15 @@
 ## Contents
 
    * [Inheritance](#inheritance)
+   * [Methods](#methods)
+      * [clearStyleCache()](#.clearStyleCache)
+      * [getStateString()](#.getStateString)
+      * [getStyle()](#.getStyle)
+      * [getStyleParam()](#.getStyleParam)
+      * [setState()](#.setState)
+      * [setStyle()](#.setStyle)
+      * [_getStyleParam()](#._getStyleParam)
+      * [_setStyleFromParent()](#._setStyleFromParent)
    * [Subclasses](#subclasses)
 
 
@@ -11,6 +20,32 @@
    * / **[Object](../lwtk/Object.md#inheritance)** / [Actionable](../lwtk/Actionable.md#inheritance) / [Node](../lwtk/Node.md#inheritance) / [Drawable](../lwtk/Drawable.md#inheritance) /
         * **[Component](../lwtk/Component.md#inheritance)** / _`Styleable`_
         * _`Styleable`_
+
+## Methods
+   * <span id=".clearStyleCache">**`Styleable:clearStyleCache()`**</span>
+
+
+   * <span id=".getStateString">**`Styleable:getStateString()`**</span>
+
+
+   * <span id=".getStyle">**`Styleable:getStyle(style)`**</span>
+
+
+   * <span id=".getStyleParam">**`Styleable:getStyleParam(paramName)`**</span>
+
+
+   * <span id=".setState">**`Styleable:setState(name, flag)`**</span>
+
+
+   * <span id=".setStyle">**`Styleable:setStyle(style)`**</span>
+
+
+   * <span id="._getStyleParam">**`Styleable:_getStyleParam(style, paramName)`**</span>
+
+
+   * <span id="._setStyleFromParent">**`Styleable:_setStyleFromParent(parentStyle)`**</span>
+
+
 
 ## Subclasses
    * / **[Object](../lwtk/Object.md#subclasses)** / [Actionable](../lwtk/Actionable.md#subclasses) / [Node](../lwtk/Node.md#subclasses) / [Drawable](../lwtk/Drawable.md#subclasses) /

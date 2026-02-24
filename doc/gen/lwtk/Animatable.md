@@ -4,11 +4,58 @@
 ## Contents
 
    * [Inheritance](#inheritance)
+   * [Methods](#methods)
+      * [animateFrame()](#.animateFrame)
+      * [getStyle()](#.getStyle)
+      * [getStyleParam()](#.getStyleParam)
+      * [isVisible()](#.isVisible)
+      * [setState()](#.setState)
+      * [setStates()](#.setStates)
+      * [setStyle()](#.setStyle)
+      * [setVisible()](#.setVisible)
+      * [updateAnimation()](#.updateAnimation)
+      * [_setApp()](#._setApp)
+      * [_setStyleFromParent()](#._setStyleFromParent)
    * [Subclasses](#subclasses)
 
 
 ## Inheritance
    * / **[Object](../lwtk/Object.md#inheritance)** / [Actionable](../lwtk/Actionable.md#inheritance) / [Node](../lwtk/Node.md#inheritance) / [Drawable](../lwtk/Drawable.md#inheritance) / **[Component](../lwtk/Component.md#inheritance)** / [Styleable](../lwtk/Styleable.md#inheritance) / _`Animatable`_
+
+## Methods
+   * <span id=".animateFrame">**`Animatable:animateFrame(newX, newY, newW, newH, isLayoutTransition)`**</span>
+
+
+   * <span id=".getStyle">**`Animatable:getStyle()`**</span>
+
+
+   * <span id=".getStyleParam">**`Animatable:getStyleParam(paramName)`**</span>
+
+
+   * <span id=".isVisible">**`Animatable:isVisible()`**</span>
+
+
+   * <span id=".setState">**`Animatable:setState(name, flag)`**</span>
+
+
+   * <span id=".setStates">**`Animatable:setStates(stateNames)`**</span>
+
+
+   * <span id=".setStyle">**`Animatable:setStyle(style)`**</span>
+
+
+   * <span id=".setVisible">**`Animatable:setVisible(shouldBeVisible)`**</span>
+
+
+   * <span id=".updateAnimation">**`Animatable:updateAnimation()`**</span>
+
+
+   * <span id="._setApp">**`Animatable:_setApp(app)`**</span>
+
+
+   * <span id="._setStyleFromParent">**`Animatable:_setStyleFromParent(parentStyle)`**</span>
+
+
 
 ## Subclasses
    * / **[Object](../lwtk/Object.md#subclasses)** / [Actionable](../lwtk/Actionable.md#subclasses) / [Node](../lwtk/Node.md#subclasses) / [Drawable](../lwtk/Drawable.md#subclasses) / **[Component](../lwtk/Component.md#subclasses)** / [Styleable](../lwtk/Styleable.md#subclasses) / _`Animatable`_ / **[Widget](../lwtk/Widget.md#subclasses)** / [Compound](../lwtk/Compound.md#subclasses) /

@@ -5,6 +5,12 @@ Base for components that can have children.
 ## Contents
 
    * [Inheritance](#inheritance)
+   * [Methods](#methods)
+      * [addChild()](#.addChild) - Adds child.
+      * [discardChild()](#.discardChild) - Discard child that should no longer be used.
+      * [removeChild()](#.removeChild) - Removes child.
+      * [_processChanges()](#._processChanges)
+      * [_processDraw()](#._processDraw)
    * [Subclasses](#subclasses)
 
 
@@ -12,6 +18,42 @@ Base for components that can have children.
    * / **[Object](../lwtk/Object.md#inheritance)** / [Actionable](../lwtk/Actionable.md#inheritance) / [Node](../lwtk/Node.md#inheritance) / [Drawable](../lwtk/Drawable.md#inheritance) / **[Component](../lwtk/Component.md#inheritance)** /
         * _`Compound`_
         * [Styleable](../lwtk/Styleable.md#inheritance) / [Animatable](../lwtk/Animatable.md#inheritance) / **[Widget](../lwtk/Widget.md#inheritance)** / _`Compound`_
+
+## Methods
+   * <span id=".addChild">**`Compound:addChild(child, index)`**</span>
+
+     Adds child.
+     
+     * *child*  - child object
+     * *index*  - optional integer
+     
+     The *index* denotes the position where the child is inserted in the list.
+     Negative values are possible, -1 means the last position of the current list.
+     
+     If *index* is not given or 0, the child is inserted at the end of the list.
+     
+     Returns the added child object.
+
+   * <span id=".discardChild">**`Compound:discardChild(child)`**</span>
+
+     Discard child that should no longer be used.
+     
+     This function could be useful under Lua 5.1 which does not have ephemeron tables.
+
+   * <span id=".removeChild">**`Compound:removeChild(child)`**</span>
+
+     Removes child.
+     
+     * *child*  - child object or child index.
+     
+     Returns the removed child object.
+
+   * <span id="._processChanges">**`Compound:_processChanges(x0, y0, cx, cy, cw, ch, damagedArea)`**</span>
+
+
+   * <span id="._processDraw">**`Compound:_processDraw(ctx, x0, y0, cx, cy, cw, ch, exposedArea)`**</span>
+
+
 
 ## Subclasses
    * / **[Object](../lwtk/Object.md#subclasses)** / [Actionable](../lwtk/Actionable.md#subclasses) / [Node](../lwtk/Node.md#subclasses) / [Drawable](../lwtk/Drawable.md#subclasses) / **[Component](../lwtk/Component.md#subclasses)** /

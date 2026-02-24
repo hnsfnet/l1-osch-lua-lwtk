@@ -4,6 +4,14 @@
 ## Contents
 
    * [Inheritance](#inheritance)
+   * [Methods](#methods)
+      * [removeChild()](#.removeChild)
+      * [_processMouseDown()](#._processMouseDown)
+      * [_processMouseEnter()](#._processMouseEnter)
+      * [_processMouseLeave()](#._processMouseLeave)
+      * [_processMouseMove()](#._processMouseMove)
+      * [_processMouseScroll()](#._processMouseScroll)
+      * [_processMouseUp()](#._processMouseUp)
    * [Subclasses](#subclasses)
 
 
@@ -13,6 +21,29 @@
              * **[Component](../lwtk/Component.md#inheritance)** / [Styleable](../lwtk/Styleable.md#inheritance) / [Animatable](../lwtk/Animatable.md#inheritance) / **[Widget](../lwtk/Widget.md#inheritance)** / [Compound](../lwtk/Compound.md#inheritance) / _`MouseDispatcher`_
              * [Styleable](../lwtk/Styleable.md#inheritance) / [KeyHandler](../lwtk/KeyHandler.md#inheritance) / _`MouseDispatcher`_
         * **[Application](../lwtk/Application.md#inheritance)** / [Node](../lwtk/Node.md#inheritance) / _`MouseDispatcher`_
+
+## Methods
+   * <span id=".removeChild">**`MouseDispatcher:removeChild(child)`**</span>
+
+
+   * <span id="._processMouseDown">**`MouseDispatcher:_processMouseDown(mx, my, button, modState)`**</span>
+
+
+   * <span id="._processMouseEnter">**`MouseDispatcher:_processMouseEnter(mx, my)`**</span>
+
+
+   * <span id="._processMouseLeave">**`MouseDispatcher:_processMouseLeave(mx, my)`**</span>
+
+
+   * <span id="._processMouseMove">**`MouseDispatcher:_processMouseMove(mouseEntered, mx, my)`**</span>
+
+
+   * <span id="._processMouseScroll">**`MouseDispatcher:_processMouseScroll(dx, dy)`**</span>
+
+
+   * <span id="._processMouseUp">**`MouseDispatcher:_processMouseUp(mouseEntered, mx, my, button, modState)`**</span>
+
+
 
 ## Subclasses
    * / **[Object](../lwtk/Object.md#subclasses)** /

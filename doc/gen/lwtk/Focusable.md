@@ -4,6 +4,13 @@
 ## Contents
 
    * [Inheritance](#inheritance)
+   * [Methods](#methods)
+      * [onDisabled()](#.onDisabled)
+      * [onEffectiveVisibilityChanged()](#.onEffectiveVisibilityChanged)
+      * [setFocus()](#.setFocus)
+      * [_handleFocusIn()](#._handleFocusIn)
+      * [_handleFocusOut()](#._handleFocusOut)
+      * [_handleHasFocusHandler()](#._handleHasFocusHandler)
    * [Subclasses](#subclasses)
 
 
@@ -13,6 +20,26 @@
              * _`Focusable`_
              * [HotkeyListener](../lwtk/HotkeyListener.md#inheritance) / **[Button](../lwtk/Button.md#inheritance)** / _`Focusable`_
         * [MouseDispatcher](../lwtk/MouseDispatcher.md#inheritance) / **[Group](../lwtk/Group.md#inheritance)** / [LayoutFrame](../lwtk/LayoutFrame.md#inheritance) / [Control](../lwtk/Control.md#inheritance) / **[Box](../lwtk/Box.md#inheritance)** / _`Focusable`_
+
+## Methods
+   * <span id=".onDisabled">**`Focusable:onDisabled(disableFlag)`**</span>
+
+
+   * <span id=".onEffectiveVisibilityChanged">**`Focusable:onEffectiveVisibilityChanged(hidden)`**</span>
+
+
+   * <span id=".setFocus">**`Focusable:setFocus(flag)`**</span>
+
+
+   * <span id="._handleFocusIn">**`Focusable:_handleFocusIn()`**</span>
+
+
+   * <span id="._handleFocusOut">**`Focusable:_handleFocusOut()`**</span>
+
+
+   * <span id="._handleHasFocusHandler">**`Focusable:_handleHasFocusHandler(focusHandler)`**</span>
+
+
 
 ## Subclasses
    * / **[Object](../lwtk/Object.md#subclasses)** / [Actionable](../lwtk/Actionable.md#subclasses) / [Node](../lwtk/Node.md#subclasses) / [Drawable](../lwtk/Drawable.md#subclasses) / **[Component](../lwtk/Component.md#subclasses)** / [Styleable](../lwtk/Styleable.md#subclasses) / [Animatable](../lwtk/Animatable.md#subclasses) / **[Widget](../lwtk/Widget.md#subclasses)** / [Compound](../lwtk/Compound.md#subclasses) /

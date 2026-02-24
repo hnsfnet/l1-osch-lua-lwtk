@@ -4,6 +4,10 @@
 ## Contents
 
    * [Inheritance](#inheritance)
+   * [Methods](#methods)
+      * [addChild()](#.addChild)
+      * [onDraw()](#.onDraw)
+      * [onLayout()](#.onLayout)
    * [Subclasses](#subclasses)
 
 
@@ -11,6 +15,17 @@
    * / **[Object](../lwtk/Object.md#inheritance)** / [Actionable](../lwtk/Actionable.md#inheritance) / [Node](../lwtk/Node.md#inheritance) / [Drawable](../lwtk/Drawable.md#inheritance) / **[Component](../lwtk/Component.md#inheritance)** / [Styleable](../lwtk/Styleable.md#inheritance) / [Animatable](../lwtk/Animatable.md#inheritance) / **[Widget](../lwtk/Widget.md#inheritance)** / [Compound](../lwtk/Compound.md#inheritance) /
         * _`LayoutFrame`_
         * [MouseDispatcher](../lwtk/MouseDispatcher.md#inheritance) / **[Group](../lwtk/Group.md#inheritance)** / _`LayoutFrame`_
+
+## Methods
+   * <span id=".addChild">**`LayoutFrame:addChild(child, index)`**</span>
+
+
+   * <span id=".onDraw">**`LayoutFrame:onDraw(ctx, x0, y0, cx, cy, cw, ch, exposedArea)`**</span>
+
+
+   * <span id=".onLayout">**`LayoutFrame:onLayout(w, h)`**</span>
+
+
 
 ## Subclasses
    * / **[Object](../lwtk/Object.md#subclasses)** / [Actionable](../lwtk/Actionable.md#subclasses) / [Node](../lwtk/Node.md#subclasses) / [Drawable](../lwtk/Drawable.md#subclasses) / **[Component](../lwtk/Component.md#subclasses)** / [Styleable](../lwtk/Styleable.md#subclasses) / [Animatable](../lwtk/Animatable.md#subclasses) / **[Widget](../lwtk/Widget.md#subclasses)** / [Compound](../lwtk/Compound.md#subclasses) /

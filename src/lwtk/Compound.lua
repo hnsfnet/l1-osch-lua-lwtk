@@ -34,11 +34,11 @@ local Compound = lwtk.newMixin("lwtk.Compound", lwtk.Styleable.NO_STYLE_SELECTOR
     * *index*  - optional integer
     
     The *index* denotes the position where the child is inserted in the list.
-    Negative values are possible, 1 means the last position of the current list.
+    Negative values are possible, -1 means the last position of the current list.
 
     If *index* is not given or 0, the child is inserted at the end of the list.
     
-    Returns the removed child object.
+    Returns the added child object.
 ]]
 function Compound.implement:addChild(child, index)
     if index then

@@ -4,11 +4,30 @@
 ## Contents
 
    * [Inheritance](#inheritance)
+   * [Methods](#methods)
+      * [handleRemainingInitParams()](#.handleRemainingInitParams)
+      * [hasActionMethod()](#.hasActionMethod)
+      * [invokeActionMethod()](#.invokeActionMethod)
+      * [setInitParams()](#.setInitParams)
    * [Subclasses](#subclasses)
 
 
 ## Inheritance
    * / **[Object](../lwtk/Object.md#inheritance)** / _`Actionable`_
+
+## Methods
+   * <span id=".handleRemainingInitParams">**`Actionable:handleRemainingInitParams(initParams)`**</span>
+
+
+   * <span id=".hasActionMethod">**`Actionable:hasActionMethod(actionMethodName)`**</span>
+
+
+   * <span id=".invokeActionMethod">**`Actionable:invokeActionMethod(actionMethodName)`**</span>
+
+
+   * <span id=".setInitParams">**`Actionable:setInitParams(initParams)`**</span>
+
+
 
 ## Subclasses
    * / **[Object](../lwtk/Object.md#subclasses)** / _`Actionable`_ /
