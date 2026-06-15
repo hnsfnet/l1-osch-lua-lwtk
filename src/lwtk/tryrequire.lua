@@ -1,7 +1,18 @@
+local searchers = package.searchers or package.loaders
+
+local function hasLoader(name)
+    for i = 1, #searchers do
+        local loader = searchers[i](name)
+        if type(loader) == "function" then
+            return true
+        end
+    end
+    return false
+end
+
 local function tryrequire(name)
-    local ok, rslt1, rslt2 = pcall(function() return require(name) end)
-    if ok then
-        return rslt1, rslt2
+    if hasLoader(name) then
+        return require(name)
     end
 end
 
