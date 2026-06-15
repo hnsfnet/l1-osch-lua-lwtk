@@ -142,16 +142,19 @@ function Color:__tostring()
     return format("lwtk.Color('%s')", self:toHex())
 end
 
-function Color.__mul(a, b)
-    local color, factor
-    if isInstanceOf(a, Color) then
-        color, factor = a, b
+function Color.__mul(left, right)
+    local factor, color
+    if isInstanceOf(left, Color) then
+        color  = left
+        factor = right
     else
-        color, factor = b, a
+        factor = left
+        color  = right
     end
-    assert(isInstanceOf(color, Color), "lwtk.Color can only be multiplied with a number")
-    assert(type(factor) == "number", "lwtk.Color can only be multiplied with a number")
-    assert(0 <= factor and factor <= 1, "factor for lwtk.Color multiplication must be in range 0 <= factor <= 1")
+    assert(isInstanceOf(color, Color), "color can only be multiplied with a number")
+    assert(type(factor) == "number", "color can only be multiplied with a number")
+    assert(0 <= factor and factor <= 1,
+           "factor for color multiplication must be in range 0 <= factor <= 1")
     if color.a then
         return Color(factor * color.r,
                      factor * color.g,
@@ -189,4 +192,3 @@ function Color.__eq(color1, color2)
 end
 
 return Color
-
