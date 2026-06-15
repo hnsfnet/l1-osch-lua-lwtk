@@ -142,14 +142,29 @@ function Color:__tostring()
     return format("lwtk.Color('%s')", self:toHex())
 end
 
-function Color.__mul(factor, color) 
-    assert(isInstanceOf(color, Color))
-    assert(type(factor) == "number" and 0 <= factor and factor <= 1)
-    local a = color.a or 1
-    return Color(factor * color.r,
-                 factor * color.g,
-                 factor * color.b,
-                 factor * a)
+function Color.__mul(left, right)
+    local factor, color
+    if isInstanceOf(left, Color) then
+        color  = left
+        factor = right
+    else
+        factor = left
+        color  = right
+    end
+    assert(isInstanceOf(color, Color), "color can only be multiplied with a number")
+    assert(type(factor) == "number", "color can only be multiplied with a number")
+    assert(0 <= factor and factor <= 1,
+           "factor for color multiplication must be in range 0 <= factor <= 1")
+    if color.a then
+        return Color(factor * color.r,
+                     factor * color.g,
+                     factor * color.b,
+                     factor * color.a)
+    else
+        return Color(factor * color.r,
+                     factor * color.g,
+                     factor * color.b)
+    end
 end
 
 function Color.__add(color1, color2) 
@@ -177,4 +192,3 @@ function Color.__eq(color1, color2)
 end
 
 return Color
-
