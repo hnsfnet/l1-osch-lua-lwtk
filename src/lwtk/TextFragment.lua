@@ -118,3 +118,32 @@ function TextFragment:setTextPos(tx, ty)
         self:triggerRedraw()
     end
 end
+
+function TextFragment.implement:onDraw(ctx, ...)
+    local label = self.label
+    if label then
+        local fontInfo = getFontInfo(self)
+        fontInfo:selectInto(ctx)
+        ctx:setColor(self:getStyleParam("TextColor"):toRGBA())
+        local tx, ty = self.tx, self.ty
+        if not tx or not ty then
+            tx = 0
+            ty = fontInfo.ascent
+        end
+        local offs = self:getStyleParam("TextOffset")
+        if offs then
+            tx = tx + offs
+            ty = ty + offs
+        end
+        ctx:drawText(tx, ty, label) 
+        if self.hotkey and self.showHotKey then
+            local x1 = tx + fontInfo:getTextWidth(self.labelLeft)
+            local x2 = x1 + fontInfo:getTextWidth(self.labelKey)
+            local y1 = ty + 1.5
+            ctx:setLineWidth(1)
+            ctx:drawLine(x1, y1, x2, y1)
+        end
+    end
+end
+
+return TextFragment
